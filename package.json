@@ -1,0 +1,21 @@
+{
+  "name": "whatsapp-gpt",
+  "version": "1.0.0",
+  "description": "WhatsApp Bot ChatGPT",
+  "main": "bot.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start" "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BOTCAHX",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.2.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_8",
+    "node-fetch": "^2.6.1"
+  }
+}
