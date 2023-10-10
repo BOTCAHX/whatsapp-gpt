@@ -26,7 +26,6 @@ WhatsApp GPT Bot utilizes the WhatsApp Web API to connect to a WhatsApp account.
 
 When a new message is received, the bot uses the message content as an input to the GPT-3 model. The generated response from the model is then sent back as a reply to the sender.
 
-Please note that you need to have a valid OpenAI API key and appropriate usage limits to use this script. You can obtain an API key by signing up for OpenAI GPT-3 API.
 
 ## Contributing
 Contributions are welcome! If you find any bugs or want to enhance the features of the bot, feel free to submit a pull request or open an issue.
