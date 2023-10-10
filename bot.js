@@ -51,7 +51,7 @@ client.on("message", async (message) => {
     const chats2 = await GptGo(text);
     client.sendMessage(message.from, chats2.result);
   } else if (text.includes("!menu")) {
-    const dataresponse = `==== LIST COMMAND ====\n*.gptgo*\n*.ai*\n`;
+    const dataresponse = `==== LIST COMMAND ====\n*!gptgo*\n*!ai*\n`;
     client.sendMessage(message.from, dataresponse);
   }
 });
