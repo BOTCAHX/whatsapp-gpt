@@ -2,6 +2,7 @@ const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const { platform } = require('node:os')
 const { askGPT, GptGo } = require('./lib/gpt_bot');
+const chalk = require('chalk');
 
 const client = new Client({
         authStrategy: new LocalAuth({
@@ -35,8 +36,9 @@ client.on("qr", (qr) => {
 client.on("ready", () => {
   console.log("Client is ready!");
 });
+
 client.on("message", async (message) => {
-  console.log(`${message.body}`);    
+  console.log(chalk.bgYellow.black(`${message.body}`));
 });
 
 client.initialize();
