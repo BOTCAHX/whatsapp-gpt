@@ -27,9 +27,14 @@ const client = new Client({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'
 });
 
+client.on('loading_screen', (percent, message) => {
+    console.log('LOADING SCREEN', percent, message);
+});
+
 console.log(client)
 
 client.on("qr", (qr) => {
+  console.log('QR RECEIVED', qr);
   qrcode.generate(qr, { small: true });
 });
 
@@ -37,31 +42,62 @@ client.on("ready", () => {
   console.log("Client is ready!");
 });
 
-client.on("message", async (message) => {
-  console.log(chalk.bgYellow.black(`${message.body}`));
+client.on('authenticated', () => {
+    console.log('AUTHENTICATED');
 });
 
+client.on('auth_failure', message => {
+    console.error('AUTHENTICATION FAILURE', message);
+});
+
+client.on('ready', async () => {
+    console.log(`${JSON.stringify(client.info)}`)
+});
 client.initialize();
 
 client.on("message", async (message) => {
-  const text = message.body.toLowerCase(); 
+  console.log(chalk.bgYellow.black(`${message.fromMe ? 'Me' : message.from}`));
+  console.log(chalk.bgYellow.black(`> ${message.body}`));
 
-  if (text.includes("!ai")) {
-    try { 
-    const chats = await askGPT(text);
-    client.sendMessage(message.from, chats.result);
-    } catch (e) {
-    console.log(e)
-    }
-  } else if (text.includes("!gptgo")) {
+  const text = message.body.toLowerCase();
+
+  if (text.includes(".ai")) {
     try {
-    const chats2 = await GptGo(text);
-     } catch (e) {
-    console.log(e)
+      const inputText = text.replace(".ai", "");
+      const chats = await askGPT(inputText);      
+      console.log(chalk.bgGreen.black(`> ${chats.result}`));     
+      client.sendMessage(message.from, chats.result);
+    } catch (e) {
+      console.log(e);
     }
-    client.sendMessage(message.from, chats2.result);
-  } else if (text.includes("!menu")) {
-    const dataresponse = `==== LIST COMMAND ====\n*.gptgo*\n*.ai*\n`;
-    client.sendMessage(message.from, dataresponse);
+  } else if (text.includes(".gptgo")) {
+    try {
+      const inputText2 = text.replace(".gptgo", "");
+      const chats2 = await GptGo(inputText2);     
+      console.log(chalk.bgGreen.black(`> ${chats2.result}`));
+      client.sendMessage(message.from, chats2.result);
+    } catch (e) {
+      console.log(e);
+    }
+  } else if (text.includes(".sticker")) {
+    try {
+      const quotedMsg = await message.getQuotedMessage();      
+      console.log(chalk.bgMagenta.black(`> ${quotedMsg.body}`));
+      
+      if (quotedMsg && quotedMsg.hasMedia) {
+        const media = await quotedMsg.downloadMedia();
+        client.sendMessage(message.from, media, { sendMediaAsSticker: true, stickerAuthor: "BOTCAHX", stickerName: "Bot", stickerCategories: ["bot", "random"]});
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  } else if (text.includes(".menu")) {
+    const r_menu = `
+┌ *MENU*
+│ ◦ ai
+│ ◦ gptgo
+│ ◦ sticker
+└ `;
+    client.sendMessage(message.from, r_menu);
   }
 });
