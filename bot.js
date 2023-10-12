@@ -82,7 +82,6 @@ client.on("message", async (message) => {
   } else if (text.includes(".sticker")) {
     try {
       const quotedMsg = await message.getQuotedMessage();      
-      console.log(chalk.bgMagenta.black(`> ${quotedMsg.body}`));
       
       if (quotedMsg && quotedMsg.hasMedia) {
         const media = await quotedMsg.downloadMedia();
