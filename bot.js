@@ -27,7 +27,7 @@ const client = new Client({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'
 });
 
-//console.log(client)
+console.log(client)
 
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
@@ -47,13 +47,21 @@ client.on("message", async (message) => {
   const text = message.body.toLowerCase(); 
 
   if (text.includes("!ai")) {
+    try { 
     const chats = await askGPT(text);
     client.sendMessage(message.from, chats.result);
+    } catch (e) {
+    console.log(e)
+    }
   } else if (text.includes("!gptgo")) {
+    try {
     const chats2 = await GptGo(text);
+     } catch (e) {
+    console.log(e)
+    }
     client.sendMessage(message.from, chats2.result);
   } else if (text.includes("!menu")) {
-    const dataresponse = `==== LIST COMMAND ====\n*!gptgo*\n*!ai*\n`;
+    const dataresponse = `==== LIST COMMAND ====\n*.gptgo*\n*.ai*\n`;
     client.sendMessage(message.from, dataresponse);
   }
 });
