@@ -1,7 +1,7 @@
 {
   "name": "whatsapp-gpt",
   "version": "1.0.0",
-  "description": "",
+  "description": "Whatsapp chatbot powered by whatsapp-web.js",
   "main": "bot.js",
   "directories": {
     "lib": "lib"
