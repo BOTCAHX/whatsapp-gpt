@@ -17,8 +17,6 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
     # PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # NodeJS Installer the latest version.
-# Recode By "https://github.com/MyDapitt/ssweb-api-caliph"
-# Terima kasih sudah memberikan saran codemu dari repository saya :)
 # LTS       :   https://deb.nodesource.com/setup_lts.x
 # Current   :   https://deb.nodesource.com/setup_current.x
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && \
@@ -54,19 +52,19 @@ RUN npm install && \
     npm i puppeteer \
     # Add user so we don't need --no-sandbox.
     # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
-    && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-    && mkdir -p /home/pptruser/Downloads /project/app \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /project/app/node_modules \
-    && chown -R pptruser:pptruser /project/app/package.json \
-    && chown -R pptruser:pptruser /project/app/package-lock.json \
-    && chown -R pptruser:pptruser /project/app
+    && groupadd -r puppeteer && useradd -r -g puppeteer -G audio,video puppeteer \
+    && mkdir -p /home/puppeteer/Downloads /project/app \
+    && chown -R puppeteer:puppeteer /home/puppeteer \
+    && chown -R puppeteerr:puppeteer /project/app/node_modules \
+    && chown -R puppeteerr:puppeteer /api/webapp/package.json \
+    && chown -R puppeteer:puppeteer /api/webapp/package-lock.json \
+    && chown -R puppeteer:puppeteer /api/webapp
 
 COPY . /api/webapp
 RUN echo -e "-> files:\n$(ls)\n\n-> Folder: $(pwd)"
 RUN npm audit fix --force
 RUN node test.js
-USER pptruser
+USER puppeteer
 
 # Port
 EXPOSE 8050
