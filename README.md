@@ -14,11 +14,27 @@ Before you start, ensure that you have the following installed on your system:
 - Chrome
 - Npm (Node Package Manager)
 
+### Install Chrome
+```sh
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+```
+```sh
+sudo apt install ./google-chrome-stable_current_amd64.deb
+```
+### Update Chrome
+```sh
+cat /etc/apt/sources.list.d/google-chrome.list
+```
+
 ## Installation
 1. Clone or download the repository from [here](https://github.com/BOTCAHX/whatsapp-gpt).
+```sh
+git clone https://github.com/BOTCAHX/whatsapp-gpt
+```
+   
 2. Open your terminal and navigate to the project directory.
 3. Run the following command to install the required dependencies:
-   ```
+   ```sh
    npm install
    ```
 
