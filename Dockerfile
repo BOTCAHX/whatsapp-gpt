@@ -58,7 +58,7 @@ RUN npm install && \
     && mkdir -p /home/pptruser/Downloads /project/app \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser /project/app/node_modules \
-    && chown -R pptruser:pptruser project/app/package.json \
+    && chown -R pptruser:pptruser /project/app/package.json \
     && chown -R pptruser:pptruser /project/app/package-lock.json \
     && chown -R pptruser:pptruser /project/app
 
