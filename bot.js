@@ -142,6 +142,7 @@ client.on("message", async (message) => {
         message.react('⏳');
         const media = await quotedMsg.downloadMedia();
         client.sendMessage(message.from, media, { sendMediaAsSticker: true, stickerAuthor: "BOTCAHX", stickerName: "Bot", stickerCategories: ["🗿", "😆"]});
+        message.react('✔️');
       }
     } catch (e) {
       console.log(e);
