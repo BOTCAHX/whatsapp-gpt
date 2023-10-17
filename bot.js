@@ -248,7 +248,7 @@ await message.reply(`
 *Uploader*
 MimeType: ${media.mimetype}
 Data (length): ${media.data.length}
-Priview: ${cloud}`)       
+Preview: ${cloud}`)       
         message.react(react_done);
       }
     } catch (e) {
