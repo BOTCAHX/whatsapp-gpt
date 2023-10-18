@@ -278,7 +278,25 @@ Preview: ${cloud}`)
 `);
     } catch (e) {
       console.log(e);
-    }    
+    }
+     } else if (text.includes(".groups")) {
+    try {
+        client.getChats().then(chats => {
+            const groups = chats.filter(chat => chat.isGroup);
+
+            if (groups.length == 0) {
+                message.reply('You have no group yet.');
+            } else {
+                let replyMsg = '*GROUPS*\n\n';
+                groups.forEach((group, i) => {
+                    replyMsg += `ID: ${group.id._serialized}\nName: ${group.name}\n\n`;
+                });
+                message.reply(replyMsg);
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
   } else if (text.includes(".menu")) {  // Help Prompt
     const r_menu = `
 ┌ *MENU*
@@ -294,6 +312,7 @@ Preview: ${cloud}`)
 │ ◦ removebg
 │ ◦ tourl
 │ ◦ info
+│ ◦ groups
 │ ◦ menu
 └ `;
     client.sendMessage(message.from, r_menu);
