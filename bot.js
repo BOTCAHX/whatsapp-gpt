@@ -9,7 +9,6 @@
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const { platform } = require('node:os');
-const os = require('os');
 const uploader = require('./lib/upload_file');
 const { askGPT, GptGo } = require('./lib/gpt_bot');
 const chalk = require('chalk');
@@ -382,6 +381,7 @@ Preview: ${cloud}`)
 }
     } catch (e) {
       console.log(e);
+    }
     } else if (text.includes(".groups")) {
     try {
         client.getChats().then(chats => {
