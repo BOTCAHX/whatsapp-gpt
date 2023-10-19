@@ -16,6 +16,7 @@
     "chalk": "^2.4.2",
     "file-type": "^16.5.4",
     "form-data": "^2.3.3",
+    "moment-timezone": "^0.5.37",
     "node-fetch": "^2.6.1",
     "nodemon": "^3.0.1",
     "puppeteer": "^21.2.1",
