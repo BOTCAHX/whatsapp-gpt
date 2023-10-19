@@ -9,6 +9,7 @@
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const { platform } = require('node:os');
+const os = require('os');
 const uploader = require('./lib/upload_file');
 const { askGPT, GptGo } = require('./lib/gpt_bot');
 const chalk = require('chalk');
@@ -136,7 +137,7 @@ client.on("message", async (message) => {
     }
    } else if (text.includes(".c-ai")) {   
     const inputtext = text.replace(".c-ai", "");
-    if (!inputtext) throw message.reply('Example: *.c-ai kirito|hai what is your name?*')
+    if (!inputtext) return message.reply('Example: *.c-ai kirito|hai what is your name?*')
     let [ prompt1, prompt2 ] = inputtext.split('|')
     if (!prompt1 || !prompt2) {
         await message.reply('Example: *.c-ai kirito|hai what is your name?*');
@@ -184,7 +185,7 @@ client.on("message", async (message) => {
     } else if (text.includes(".gptgo")) {
     try {
       const inputText = text.replace(".gptgo", "");
-       if (!inputText) throw message.reply('Enter questions!')
+       if (!inputText) return message.reply('Enter questions!')
        message.react(react_loading);
       const chats = await GptGo(inputText);     
       console.log(chalk.bgGreen.black(`> ${chats.result}`));
@@ -226,7 +227,7 @@ client.on("message", async (message) => {
     } else if (text.includes(".dalle")) {
       try {
         const inputText = text.replace(".dalle", "");
-         if (!inputText) throw message.reply('Input parameter text!')
+         if (!inputText) return message.reply('Input parameter text!')
         message.react(react_loading);
         const res = await fetch(BASE_URL + `/dalle` + `?text=${encodeURIComponent(inputText)}`).then(response => response.buffer())       
         const response = new MessageMedia((await fromBuffer(res)).mime, res.toString("base64"))
@@ -251,7 +252,7 @@ client.on("message", async (message) => {
      } else if (text.includes(".removebg")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
-      if (!quotedMsg) throw message.reply('Reply image messages with caption *.removebg*')          
+      if (!quotedMsg) return message.reply('Reply image messages with caption *.removebg*')          
       if (quotedMsg && quotedMsg.hasMedia) {
         message.react(react_loading);
         const media = await quotedMsg.downloadMedia();
@@ -270,7 +271,7 @@ client.on("message", async (message) => {
       } else if (text.includes(".remini")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
-          if (!quotedMsg) throw message.reply('Reply image messages with caption *.remini*')          
+          if (!quotedMsg) return message.reply('Reply image messages with caption *.remini*')          
       if (quotedMsg && quotedMsg.hasMedia) {
         message.react(react_loading);
         const media = await quotedMsg.downloadMedia();
@@ -289,7 +290,7 @@ client.on("message", async (message) => {
       } else if (text.includes(".tozombie")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
-      if (!quotedMsg) throw message.reply('Reply image messages with caption *.tozombie*')             
+      if (!quotedMsg) return message.reply('Reply image messages with caption *.tozombie*')             
       if (quotedMsg && quotedMsg.hasMedia) {
         message.react(react_loading);
         const media = await quotedMsg.downloadMedia();
@@ -308,7 +309,7 @@ client.on("message", async (message) => {
       } else if (text.includes(".toanime")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
-      if (!quotedMsg) throw message.reply('Reply image messages with caption *.toanime*')                     
+      if (!quotedMsg) return message.reply('Reply image messages with caption *.toanime*')                     
       if (quotedMsg && quotedMsg.hasMedia) {
         message.react(react_loading);
         const media = await quotedMsg.downloadMedia();
@@ -327,7 +328,7 @@ client.on("message", async (message) => {
      } else if (text.includes(".tourl")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
-      if (!quotedMsg) throw message.reply('Reply image/file messages with caption *.tourl*')          
+      if (!quotedMsg) return message.reply('Reply image/file messages with caption *.tourl*')          
       if (quotedMsg && quotedMsg.hasMedia) {
         message.react(react_loading);
         const media = await quotedMsg.downloadMedia();
@@ -346,7 +347,7 @@ Preview: ${cloud}`)
     } else if (text.includes(".text2img")) {
       try {        
         const inputText = text.replace(".text2img", "");
-        if (!inputText) throw message.reply('Enter parameter text!')
+        if (!inputText) return message.reply('Enter parameter text!')
         message.react(react_loading);
         const res = await fetch(BASE_URL + `/ai/text2img` + `?text=${encodeURIComponent(inputText)}`).then(response => response.buffer());      
         const response = new MessageMedia((await fromBuffer(res)).mime, res.toString("base64"))
@@ -377,12 +378,22 @@ Preview: ${cloud}`)
     let minutes = Math.floor((hoursms) / (60 * 1000));
     let minutesms = ms % (60 * 1000);
     let sec = Math.floor((minutesms) / (1000));
-    return days + " d " + hours + "h " + minutes + "m " + sec + "s ";
+    return days + "d " + hours + "h " + minutes + "m " + sec + "s ";
 }
     } catch (e) {
       console.log(e);
-    }
-    } else if (text.includes(".groups")) {
+    } 
+  } else if (text.includes(".snapshot")) {
+    try {
+     const pages = await client.pupBrowser.pages();
+     const page = pages[0];     
+     const screenshot = await page.screenshot({ fullPage: true });
+     const response = new MessageMedia((await fromBuffer(screenshot)).mime, screenshot.toString("base64"))
+     await client.sendMessage(message.from, response, { caption: `*Snapshot Browser*`, quotedMessage: message.id._serialized });     
+    } catch (e) {
+      console.log(e);
+    } 
+  } else if (text.includes(".groups")) {
     try {
         client.getChats().then(chats => {
             const groups = chats.filter(chat => chat.isGroup);
@@ -401,7 +412,7 @@ Preview: ${cloud}`)
         console.log(e);
     }    
   } else if (text.includes(".menu")) {  // Menu
-    const r_menu = `
+    const r_menu = ` 
 ◦ *Browser Version*  :  ${await client.getWWebVersion()}
 ◦ *Library Version* : ${require('whatsapp-web.js/package.json').version}\n
 ┌ *MENU*
@@ -419,6 +430,7 @@ Preview: ${cloud}`)
 │ ◦ info
 │ ◦ groups
 │ ◦ menu
+│ ◦ snapshot
 └ `;
     async function ctwa(title, description, thumbnail, mediaUrl) {
         if (!title && !description && !thumbnail && !mediaUrl) {
