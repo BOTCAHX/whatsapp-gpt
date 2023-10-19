@@ -95,7 +95,7 @@ client.on("message", async (message) => {
   if (text.includes(".ai")) {
     try {      
       const inputText = text.replace(".ai", "");
-      if (!inputText) throw message.reply('Enter questions!')
+      if (!inputText) return message.reply('Enter questions!')
       message.react(react_loading);
       const chats = await askGPT(inputText);      
       console.log(chalk.bgGreen.black(`> ${chats.result}`)); 
