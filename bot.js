@@ -355,7 +355,19 @@ Preview: ${cloud}`)
         message.react(react_done);
     } catch (e) {
         console.log(e);
-    }    
+    }
+    } else if (text.includes(".stablediffusion")) {
+      try {        
+        const inputText = text.replace(".stablediffusion", "");
+        if (!inputText) return message.reply('Enter parameter text!')
+        message.react(react_loading);
+        const res = await fetch(BASE_URL + `/ai/stablediffusion` + `?text=${encodeURIComponent(inputText)}`).then(response => response.buffer());      
+        const response = new MessageMedia((await fromBuffer(res)).mime, res.toString("base64"))
+        await client.sendMessage(message.from, response, { caption: `Prompt: ${inputText}`, quotedMessage: message.id._serialized });        
+        message.react(react_done);
+    } catch (e) {
+        console.log(e);
+    }        
     } else if (text.includes(".info")) {
     try {
       let info = client.info;
@@ -425,6 +437,7 @@ Preview: ${cloud}`)
 │ ◦ remini
 │ ◦ toanime
 │ ◦ tozombie
+│ ◦ stablediffusion
 │ ◦ removebg
 │ ◦ tourl
 │ ◦ info
