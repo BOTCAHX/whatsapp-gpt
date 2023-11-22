@@ -224,6 +224,48 @@ client.on("message", async (message) => {
     } catch (e) {
       console.log(e);
     }
+    } else if (text.includes(".gpt4")) {
+    try {
+      const inputText = text.replace(".gpt4", "");
+       if (!inputText) return message.reply('Enter questions!')
+       message.react(react_loading);
+      const chats = await fetch(BASE_URL + `/gpt4` + `?text=${inputText}`).then(response => response.json())
+      console.log(chalk.bgGreen.black(`> ${chats.result}`));
+      
+      async function ctwa(title, description, thumbnail, mediaUrl) {
+        if (!title && !description && !thumbnail && !mediaUrl) {
+            const thumb = await MessageMedia.fromUrl('https://telegra.ph/file/3a34bfa58714bdef500d9.jpg');
+            return ({
+                "ctwaContext": {
+                    title: 'Simple WhatsApp Bot',
+                    description: `Library Version : ${require('whatsapp-web.js/package.json').version}`,
+                    thumbnail: thumb.data,
+                    mediaType: 2,
+                    mediaUrl: 'https://www.facebook.com/tio.permana.50999'
+                }
+            });
+        }
+        else return ({
+            ctwaContext: {
+                title: title,
+                description: description,
+                thumbnail: thumbnail,
+                mediaType: 2,
+                mediaUrl: mediaUrl
+            }
+        });
+    }
+
+    let fake = await ctwa();
+    fake.isForwarded = true;
+      await client.sendMessage(message.from, chats.result, {
+        quotedMessageId: message.id._serialized,
+        extra: fake
+    });
+      message.react(react_done);
+    } catch (e) {
+      console.log(e);
+    }
     } else if (text.includes(".dalle")) {
       try {
         const inputText = text.replace(".dalle", "");
@@ -430,6 +472,7 @@ Preview: ${cloud}`)
 ┌ *MENU*
 │ ◦ ai
 │ ◦ gptgo
+│ ◦ gpt4
 │ ◦ c-ai
 │ ◦ dalle
 │ ◦ text2img
