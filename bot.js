@@ -290,6 +290,139 @@ client.on("message", async (message) => {
       }
     } catch (e) {
       console.log(e);
+    }   
+     } else if (text.includes(".bardimg")) {
+    try {
+      const inputText = text.replace(".bardimg", "");
+      if (!inputText) return message.reply('Input parameter text!')
+      const quotedMsg = await message.getQuotedMessage();
+      if (!quotedMsg) return message.reply('Reply image messages with caption *.bardimg*')                     
+      if (quotedMsg && quotedMsg.hasMedia) {
+        message.react(react_loading);
+        const media = await quotedMsg.downloadMedia();
+        const buffer = Buffer.from(media.data, 'base64');
+        const cloud = await uploader(buffer)        
+        const bard = await fetch(BASE_URL + `/bardimg` + `?url=${cloud}` + `&text=${encodeURIComponent(inputText)}}`).then(response => response.json());
+        console.log(chalk.bgGreen.black(`> ${bard.result}`));
+        
+      async function ctwa(title, description, thumbnail, mediaUrl) {
+        if (!title && !description && !thumbnail && !mediaUrl) {
+            const thumb = await MessageMedia.fromUrl('https://telegra.ph/file/3a34bfa58714bdef500d9.jpg');
+            return ({
+                "ctwaContext": {
+                    title: 'Simple WhatsApp Bot',
+                    description: `Library Version : ${require('whatsapp-web.js/package.json').version}`,
+                    thumbnail: thumb.data,
+                    mediaType: 2,
+                    mediaUrl: 'https://www.facebook.com/tio.permana.50999'
+                }
+            });
+        }
+        else return ({
+            ctwaContext: {
+                title: title,
+                description: description,
+                thumbnail: thumbnail,
+                mediaType: 2,
+                mediaUrl: mediaUrl
+            }
+        });
+    }
+
+    let fake = await ctwa();
+    fake.isForwarded = true;
+      await client.sendMessage(message.from, bard.result, {
+        quotedMessageId: message.id._serialized,
+        extra: fake
+    });
+        message.react(react_done);
+      }
+    } catch (e) {
+      console.log(e);
+    } 
+   } else if (text.includes(".bard")) {
+    try {
+      const inputText = text.replace(".bard", "");
+       if (!inputText) return message.reply('Enter questions!')
+       message.react(react_loading);
+      const chats = await fetch(BASE_URL + `/bard` + `?text=${inputText}`).then(response => response.json())
+      console.log(chalk.bgGreen.black(`> ${chats.result}`));
+      
+      async function ctwa(title, description, thumbnail, mediaUrl) {
+        if (!title && !description && !thumbnail && !mediaUrl) {
+            const thumb = await MessageMedia.fromUrl('https://telegra.ph/file/3a34bfa58714bdef500d9.jpg');
+            return ({
+                "ctwaContext": {
+                    title: 'Simple WhatsApp Bot',
+                    description: `Library Version : ${require('whatsapp-web.js/package.json').version}`,
+                    thumbnail: thumb.data,
+                    mediaType: 2,
+                    mediaUrl: 'https://www.facebook.com/tio.permana.50999'
+                }
+            });
+        }
+        else return ({
+            ctwaContext: {
+                title: title,
+                description: description,
+                thumbnail: thumbnail,
+                mediaType: 2,
+                mediaUrl: mediaUrl
+            }
+        });
+    }
+
+    let fake = await ctwa();
+    fake.isForwarded = true;
+      await client.sendMessage(message.from, chats.result, {
+        quotedMessageId: message.id._serialized,
+        extra: fake
+    });
+      message.react(react_done);
+    } catch (e) {
+      console.log(e);
+    }     
+      } else if (text.includes(".bing")) {
+    try {
+      const inputText = text.replace(".bing", "");
+       if (!inputText) return message.reply('Enter questions!')
+       message.react(react_loading);
+      const chats = await fetch(BASE_URL + `/bingai` + `?text=${inputText}`).then(response => response.json())
+      console.log(chalk.bgGreen.black(`> ${chats.result}`));
+      
+      async function ctwa(title, description, thumbnail, mediaUrl) {
+        if (!title && !description && !thumbnail && !mediaUrl) {
+            const thumb = await MessageMedia.fromUrl('https://telegra.ph/file/3a34bfa58714bdef500d9.jpg');
+            return ({
+                "ctwaContext": {
+                    title: 'Simple WhatsApp Bot',
+                    description: `Library Version : ${require('whatsapp-web.js/package.json').version}`,
+                    thumbnail: thumb.data,
+                    mediaType: 2,
+                    mediaUrl: 'https://www.facebook.com/tio.permana.50999'
+                }
+            });
+        }
+        else return ({
+            ctwaContext: {
+                title: title,
+                description: description,
+                thumbnail: thumbnail,
+                mediaType: 2,
+                mediaUrl: mediaUrl
+            }
+        });
+    }
+
+    let fake = await ctwa();
+    fake.isForwarded = true;
+      await client.sendMessage(message.from, chats.result, {
+        quotedMessageId: message.id._serialized,
+        extra: fake
+    });
+      message.react(react_done);
+    } catch (e) {
+      console.log(e);
     }
      } else if (text.includes(".removebg")) {
     try {
@@ -321,7 +454,7 @@ client.on("message", async (message) => {
         const cloud = await uploader(buffer)        
         const remini = await fetch(BASE_URL + `/remini` + `?url=${cloud}` + `&resolusi=4`).then(response => response.json());
         console.log(chalk.bgGreen.black(`> ${remini.url.url}`));
-        const imgs = await fetch(remini.url.url).then(res => res.buffer())
+        const imgs = await fetch(remini.url).then(res => res.buffer())
         const response = new MessageMedia((await fromBuffer(imgs)).mime, imgs.toString("base64"))        
         await client.sendMessage(message.from, response, { caption: `✔️ Done`, quotedMessage: message.id._serialized });        
         message.react(react_done);
@@ -367,6 +500,25 @@ client.on("message", async (message) => {
     } catch (e) {
       console.log(e);
     }
+     } else if (text.includes(".togta")) {
+    try {
+      const quotedMsg = await message.getQuotedMessage();
+      if (!quotedMsg) return message.reply('Reply image messages with caption *.togta*')                     
+      if (quotedMsg && quotedMsg.hasMedia) {
+        message.react(react_loading);
+        const media = await quotedMsg.downloadMedia();
+        const buffer = Buffer.from(media.data, 'base64');
+        const cloud = await uploader(buffer)        
+        const gta = await fetch(BASE_URL + `/jadigta` + `?url=${cloud}`).then(response => response.json());
+        console.log(chalk.bgGreen.black(`> ${gta.result}`));
+        const imgs = await fetch(gta.result).then(res => res.buffer())
+        const response = new MessageMedia((await fromBuffer(imgs)).mime, imgs.toString("base64"))
+        await client.sendMessage(message.from, response, { caption: `✔️ Done`, quotedMessage: message.id._serialized });               
+        message.react(react_done);
+      }
+    } catch (e) {
+      console.log(e);
+    }
      } else if (text.includes(".tourl")) {
     try {
       const quotedMsg = await message.getQuotedMessage();
@@ -398,12 +550,25 @@ Preview: ${cloud}`)
     } catch (e) {
         console.log(e);
     }
+      } else if (text.includes(".bimg")) {
+      try {        
+        const inputText = text.replace(".bimg", "");
+        if (!inputText) return message.reply('Enter parameter text!')
+        message.react(react_loading);
+        const res = await fetch(BASE_URL + `/bingimg` + `?text=${encodeURIComponent(inputText)}`).then(response => response.json()); 
+        const imgs = await fetch(res.result).then(result => result.buffer());
+        const response = new MessageMedia((await fromBuffer(imgs)).mime, imgs.toString("base64"))
+        await client.sendMessage(message.from, response, { caption: `Prompt: ${inputText}`, quotedMessage: message.id._serialized });        
+        message.react(react_done);
+    } catch (e) {
+        console.log(e);
+    }
     } else if (text.includes(".stablediffusion")) {
       try {        
         const inputText = text.replace(".stablediffusion", "");
         if (!inputText) return message.reply('Enter parameter text!')
         message.react(react_loading);
-        const res = await fetch(BASE_URL + `/ai/stablediffusion` + `?text=${encodeURIComponent(inputText)}`).then(response => response.buffer());      
+        const res = await fetch(BASE_URL + `/stablediffusion` + `?text=${encodeURIComponent(inputText)}`).then(response => response.buffer());      
         const response = new MessageMedia((await fromBuffer(res)).mime, res.toString("base64"))
         await client.sendMessage(message.from, response, { caption: `Prompt: ${inputText}`, quotedMessage: message.id._serialized });        
         message.react(react_done);
@@ -475,10 +640,15 @@ Preview: ${cloud}`)
 │ ◦ gpt4
 │ ◦ c-ai
 │ ◦ dalle
+│ ◦ bard
+│ ◦ bardimg
+│ ◦ bing
+│ ◦ bingimg
 │ ◦ text2img
 │ ◦ sticker
 │ ◦ remini
 │ ◦ toanime
+│ ◦ togta
 │ ◦ tozombie
 │ ◦ stablediffusion
 │ ◦ removebg
@@ -520,5 +690,3 @@ Preview: ${cloud}`)
     });
 }
 });
-
-    
