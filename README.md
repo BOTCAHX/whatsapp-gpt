@@ -11,7 +11,7 @@ WhatsApp GPT Bot is a chatbot script designed for use on the WhatsApp platform. 
 │ ◦ bard
 │ ◦ bardimg
 │ ◦ bing
-│ ◦ bingimg
+│ ◦ bimg
 │ ◦ text2img
 │ ◦ sticker
 │ ◦ remini
