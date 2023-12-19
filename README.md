@@ -2,16 +2,21 @@
 WhatsApp GPT Bot is a chatbot script designed for use on the WhatsApp platform. It is built using Node.js and whatsapp-web.js library.
 # Menu
 ```
-┌ MENU
+┌ *MENU*
 │ ◦ ai
 │ ◦ gptgo
 │ ◦ gpt4
 │ ◦ c-ai
 │ ◦ dalle
+│ ◦ bard
+│ ◦ bardimg
+│ ◦ bing
+│ ◦ bingimg
 │ ◦ text2img
 │ ◦ sticker
 │ ◦ remini
 │ ◦ toanime
+│ ◦ togta
 │ ◦ tozombie
 │ ◦ stablediffusion
 │ ◦ removebg
