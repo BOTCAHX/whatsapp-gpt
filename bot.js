@@ -643,7 +643,7 @@ Preview: ${cloud}`)
 │ ◦ bard
 │ ◦ bardimg
 │ ◦ bing
-│ ◦ bingimg
+│ ◦ bimg
 │ ◦ text2img
 │ ◦ sticker
 │ ◦ remini
